@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+        <script>
+            function contacto(id,nombre,apellido){
+                this.id=id;
+                this.nombre=nombre;
+                this.apellido=apellido;
+            }
+            var array=new Array();
+            var index=0;
+           $(function(){
+               $("#save").tap(function(){
+                   var con=new contacto(index,$("#nombre").val(),$("#ape").val());
+                   array[index]=con;
+                   var valores=JSON.stringify(array);
+                   localStorage.setItem("record",valores);
+                   $("#myDialog").popup("open");
+                   index++;                   
+               });
+               $("#close").tap(function(){
+                   $("#myDialog").popup("close");
+               });
+              
+               $("#listado").tap(function(){
+                    var elementos = JSON.parse(localStorage.getItem("record"));
+                  $("#tabla tbody > tr").remove();
+                   
+                    for (var i = 0; i < elementos.length; i++) {
+                        $("#tabla tbody").append(
+                                "<tr>"+
+                                "<td>" + elementos[i].id + "</td>" +
+                                "<td>" + elementos[i].nombre + "</td>" +
+                                "<td>" + elementos[i].apellido + "</td>" +
+                                "</tr>");
+                        }
+               });
+           });
+            
+        </script>
+    </head>
+    <body>
+        <div data-role="page" id="pag1">
+            <div data-role="header">
+                <h1>Demo Header</h1>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div data-role="tabs">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#fragment-1" id="contacto" data-icon="user" data-iconpos="bottom">Contacto</a></li>
+                            <li><a href="#fragment-2" id="listado" data-icon="bars" data-iconpos="bottom">Lista</a></li>
+                            <li><a href="#fragment-3" id="info" data-icon="info" data-iconpos="bottom">Info</a></li>
+                        </ul>
+                    </div>
+                    <div id="fragment-1">
+                        <form>
+                            <label for="nombre">Nombre</label>
+                            <input type="text" name="nombre" id="nombre">
+                            <label for="ape">Apellidos</label>
+                            <input type="text" name="ape" id="ape">
+                            <input type="button" id="save" value="Save" data-icon="check">
+                        </form>
+                    </div>
+                     <div id="fragment-2">
+                        <table data-role="table" data-mode="columntoggle" id="tabla">
+                          <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                            </tr>
+                          </thead>
+                          <tbody/>
+                        </table>
+                    </div>
+                     <div id="fragment-3">
+                        Contenido 3
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer">
+                <h1>End demo</h1>
+            </div>
+            <div data-role="popup" id="myDialog" data-transition="slide">
+                <div data-role="header">
+                    <h1>Informacion</h1>
+                </div>
+                <div data-role="main" class="ui-content">
+                    <p> Registro Ok</p>
+                    <a href="#" class="ui-button" id="close">Close</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
